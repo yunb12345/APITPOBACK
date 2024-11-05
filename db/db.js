@@ -7,6 +7,8 @@ const sequelize = new Sequelize(process.env.DEV_DB_NAME, process.env.DEV_DB_USER
 });
 
 const User = UserModel(sequelize, Sequelize);
+const Proyect = ProyectModel(sequelize,Sequelize);
+const Ticket = TicketModel(sequelize,Sequelize);
 
 sequelize.sync()
     .then(() => {
@@ -19,5 +21,7 @@ sequelize.sync()
 
 module.exports = {
     sequelize,
-    User
+    User,
+    Proyect,
+    Ticket,
 };

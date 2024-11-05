@@ -1,5 +1,4 @@
 const UserSerice = require('../services/users');
-const { User } = require("../db/db");
 
 const getUsers = async (req, res) => {
     try {
@@ -10,4 +9,7 @@ const getUsers = async (req, res) => {
             message: err.message
         });
     }
+};
+module.exports = {
+    getUsers,
 };
