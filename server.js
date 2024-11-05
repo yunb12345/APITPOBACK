@@ -1,4 +1,9 @@
 const express = require("express");
+const dotenv = require('dotenv'); //esto para variables de entorno
+const {
+    sequelize
+} = require('./db/db');
+dotenv.config();
 
 const app = express();
 const PORT = 8080;
@@ -15,3 +20,12 @@ app.listen(PORT,() => {
 app.use('/api/users',require('./routes/users')); //https://localhost:8080/api/users
 app.use('/api/proyects',require('./routes/proyects')); //https://localhost:8080/api/proyects
 app.use('/api/tickets',require('./routes/tickets')); //https://localhost:8080/api/tickets
+
+sequelize.authenticate()
+    .then(() => {
+        console.log('Database connection established!');
+    })
+    .catch(err => {
+        console.log('Error: ', err);
+    });
+
