@@ -17,9 +17,9 @@ app.listen(PORT,() => {
 })
 //localhost:8080
 
-app.use('/api/users',require('./routes/users')); //https://localhost:8080/api/users
-app.use('/api/proyects',require('./routes/proyects')); //https://localhost:8080/api/proyects
-app.use('/api/tickets',require('./routes/tickets')); //https://localhost:8080/api/tickets
+app.use('/api/users',require('./routes/users')); //http://localhost:8080/api/users
+app.use('/api/proyects',require('./routes/proyects')); //http://localhost:8080/api/proyects
+app.use('/api/tickets',require('./routes/tickets')); //http://localhost:8080/api/tickets
 
 sequelize.authenticate()
     .then(() => {

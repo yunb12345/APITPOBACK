@@ -1,6 +1,6 @@
 const ProyectService = require('../services/proyects');
 
-const getProyect = async (req, res) => {
+const getProyects = async (req, res) => {
     try {
         const proyects = await ProyectService.getProyects();
         res.status(200).json(proyects);
@@ -13,5 +13,5 @@ const getProyect = async (req, res) => {
 
 
 module.exports = {
-    getProyect,
+    getProyects,
 };

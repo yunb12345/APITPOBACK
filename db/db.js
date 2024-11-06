@@ -1,5 +1,7 @@
 const {Sequelize} = require('sequelize');
-const UserModel = require('./models/user');
+const UserModel = require('./models/users');
+const ProyectModel = require('./models/proyects');
+const TicketModel = require('./models/tickets');
 const dotenv = require('dotenv'); //variables de env 
 dotenv.config();
 
@@ -19,20 +21,20 @@ User.hasMany(Ticket, {
 });
 Ticket.belongsTo(User,{
     foreignKey:'authorId',
-    sourceKey:'id',
+    targetKey:'id',
     onDelete:'CASCADE',
-    as:'author',
+    as:'author'
 });
 Proyect.hasMany(Ticket,{
     foreignKey: 'proyectId',
-    targetKey:'id',
-    onDelete:'CASCADE',
+    sourceKey:'id',
+    onDelete:'CASCADE'
 })
 Ticket.belongsTo(Proyect,{
     foreignKey:'proyectId',
     targetKey:'id',
     onDelete:'CASCADE',
-    as:'proytect',
+    as:'proytect'
 })
 
 sequelize.sync()
