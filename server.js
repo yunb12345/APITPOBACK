@@ -1,5 +1,6 @@
 const express = require("express");
 const dotenv = require('dotenv'); //esto para variables de entorno
+
 const {
     sequelize
 } = require('./db/db');
@@ -7,6 +8,11 @@ dotenv.config();
 
 const app = express();
 const PORT = 8080;
+
+app.use(express.json());
+app.use(express.urlencoded({
+    extended: true
+}));
 
 app.get('/',(req,res) => { //req data que viene y res data que se va
     res.send("Hola mundo");
