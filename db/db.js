@@ -1,7 +1,7 @@
 const {Sequelize} = require('sequelize');
 const UserModel = require('./models/users');
 const ProyectModel = require('./models/proyects');
-const TicketModel = require('./models/tickets');
+const TransaccionModel = require('./models/transacciones');
 const UserProyectModel = require('./models/users_projects');
 const GastoModel = require('./models/gastos');
 const dotenv = require('dotenv'); //variables de env 
@@ -14,7 +14,7 @@ const sequelize = new Sequelize(process.env.DEV_DB_NAME, process.env.DEV_DB_USER
 
 const User = UserModel(sequelize, Sequelize);
 const Proyect = ProyectModel(sequelize,Sequelize);
-const Ticket = TicketModel(sequelize,Sequelize);
+const Transaccion = TransaccionModel(sequelize,Sequelize);
 const UsersProyects = UserProyectModel(sequelize,Sequelize);
 const Gasto = GastoModel(sequelize,Sequelize);
 
@@ -29,34 +29,36 @@ Gasto.belongsTo(User,{
     onDelete:'CASCADE',
     as:'author'
 });
-Proyect.hasMany(Gasto,{
+Proyect.hasMany(Transaccion,{
     foreignKey: 'proyectId',
     sourceKey:'id',
     onDelete:'CASCADE'
 });
-Gasto.belongsTo(Proyect,{
+Transaccion.belongsTo(Proyect,{
     foreignKey:'proyectId',
     targetKey:'id',
     onDelete:'CASCADE',
-    as:'proytect',
 });
 
-Gasto.hasOne(Ticket,{
-    foreignKey:'ticketId',
-    name:'ticketId',
+Gasto.hasOne(Transaccion,{
+    foreignKey:'transaccionId',
+    name:'transaccionId',
     sourceKey:'id',
     onDelete:'CASCADE',
 });
-Ticket.belongsTo(Gasto,{
-    foreignKey:'ticketId',
+Transaccion.belongsTo(Gasto,{
+    foreignKey:'transaccionId',
     targetKey:'id',
     onDelete:'CASCADE',
-    as:'ticket',
+    as:'transaccion',
 });
 
-//User.belongsToMany(Proyect,{through:UsersProyects}); // de muchos a muchos
-//Proyect.belongsToMany(User,{through:UsersProyects}); 
-
+User.belongsToMany(Proyect, {
+    through: UsersProyects,
+});
+Proyect.belongsToMany(User, {
+    through: UsersProyects,
+});
 
 sequelize.sync()
     .then(() => {
@@ -71,7 +73,7 @@ module.exports = {
     sequelize,
     User,
     Proyect,
-    Ticket,
+    Transaccion,
     UsersProyects,
     Gasto,
 };
