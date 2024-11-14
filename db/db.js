@@ -18,17 +18,6 @@ const Transaccion = TransaccionModel(sequelize,Sequelize);
 const UsersProyects = UserProyectModel(sequelize,Sequelize);
 const Gasto = GastoModel(sequelize,Sequelize);
 
-User.hasMany(Gasto, {
-    foreignKey: 'userId',
-    sourceKey: 'id',
-    onDelete: 'CASCADE'
-});
-Gasto.belongsTo(User,{
-    foreignKey:'userId',
-    targetKey:'id',
-    onDelete:'CASCADE',
-    as:'author'
-});
 Proyect.hasMany(Transaccion,{
     foreignKey: 'proyectId',
     sourceKey:'id',
@@ -40,18 +29,12 @@ Transaccion.belongsTo(Proyect,{
     onDelete:'CASCADE',
 });
 
-Gasto.hasOne(Transaccion,{
-    foreignKey:'transaccionId',
-    name:'transaccionId',
-    sourceKey:'id',
-    onDelete:'CASCADE',
+User.belongsToMany(Transaccion,{
+    through:Gasto,
 });
-Transaccion.belongsTo(Gasto,{
-    foreignKey:'transaccionId',
-    targetKey:'id',
-    onDelete:'CASCADE',
-    as:'transaccion',
-});
+Transaccion.belongsToMany(User,{
+    through:Gasto,
+})
 
 User.belongsToMany(Proyect, {
     through: UsersProyects,

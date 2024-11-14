@@ -5,6 +5,14 @@ const validateRequest = require('../middlewares/request_validator');
 
 const router = Router();
 
-router.get('/',ProyectController.getProyects); //http://localhost:8080/api/users/       endpoint final trae todos los usuarios
+router.get('/',ProyectController.getProyects); //http://localhost:8080/api/proyects/       endpoint final trae todos los proyectos
+router.get('/:id', ProyectController.getProyectById);
+router.post('/',
+    [
+        check("proyectName").not().isEmpty(),
+        check("proyectDesc").not().isEmpty(),
+        validateRequest,
+    ],
+    ProyectController.createProyect);
 
 module.exports = router;
