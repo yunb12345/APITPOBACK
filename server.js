@@ -27,6 +27,7 @@ app.use('/api/users',require('./routes/users')); //http://localhost:8080/api/use
 app.use('/api/proyects',require('./routes/proyects')); //http://localhost:8080/api/proyects
 app.use('/api/gastos',require('./routes/gastos')); //http://localhost:8080/api/tickets
 app.use('/api/transacciones',require('./routes/transacciones'));
+app.use('/api/user_proyects',require('./routes/user_proyects'));
 
 sequelize.authenticate()
     .then(() => {

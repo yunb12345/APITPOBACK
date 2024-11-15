@@ -11,5 +11,6 @@ router.post('/',
         validateRequest,
     ],
     TransaccionController.createTransaccion);
+router.get('/proyects/:id', TransaccionController.getTransaccionByProyectId);
 
 module.exports = router;

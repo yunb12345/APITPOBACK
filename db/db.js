@@ -2,7 +2,7 @@ const {Sequelize} = require('sequelize');
 const UserModel = require('./models/users');
 const ProyectModel = require('./models/proyects');
 const TransaccionModel = require('./models/transacciones');
-const UserProyectModel = require('./models/users_projects');
+const UserProyectModel = require('./models/users_proyects');
 const GastoModel = require('./models/gastos');
 const dotenv = require('dotenv'); //variables de env 
 dotenv.config();
