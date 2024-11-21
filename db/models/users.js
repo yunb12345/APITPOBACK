@@ -11,6 +11,10 @@ module.exports = (sequelize) => {
         email: DataTypes.STRING,
         password : DataTypes.STRING,
         balance : DataTypes.INTEGER,
+        imageUrl: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
     });
 
     return User;

@@ -43,6 +43,7 @@ Proyect.belongsToMany(User, {
     through: UsersProyects,
 });
 
+//sequelize.drop(); // para dropear todas las tablas
 sequelize.sync()
     .then(() => {
         console.log('Database & tables created!');

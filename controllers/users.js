@@ -1,4 +1,5 @@
 const UserSerice = require('../services/users');
+const CloudinaryService = require('../services/cloudinary');
 
 const getUsers = async (req, res) => {
     try {
@@ -29,8 +30,10 @@ const getUserById = async (req, res) => {
     }
 };
 const createUser = async (req, res) => {
+    const fileBuffer = req.file.buffer;
     try {
-        const user = await UserSerice.createUser(req.body);
+        const urlImg = await CloudinaryService.uploadImage(fileBuffer);
+        const user = await UserSerice.createUser({...req.body,imageUrl:urlImg});
         res.status(200).json(user);
     } catch (err) {
         res.status(500).json({
@@ -38,9 +41,23 @@ const createUser = async (req, res) => {
         });
     }
 };
-
+const updateUser = async (req,res) =>{
+    const{
+        id
+    } = req.params;
+    try{
+        const user = await UserSerice.updateUser(req.body,Number(id));
+        res.status(200).json(user);
+    }
+    catch(err){
+        res.status(500).json({
+            message: err.message
+        });
+    }
+}
 module.exports = {
     getUsers,
     getUserById,
     createUser,
+    updateUser,
 };

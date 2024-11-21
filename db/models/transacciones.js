@@ -21,7 +21,11 @@ module.exports = (sequelize) => {
         nombreTransaccion:{
             type:DataTypes.STRING,
             allowNull:false,
-        }
+        },
+        imageUrl: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
     });
 
     return Transacciones;

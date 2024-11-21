@@ -1,3 +1,4 @@
+const { Proyect } = require('../db/db');
 const ProyectService = require('../services/proyects');
 
 const getProyects = async (req, res) => {
@@ -38,9 +39,22 @@ const createProyect = async (req, res) => {
         });
     }
 };
-
+const updateProyect = async(req,res) =>{
+    const{
+        id
+    } = req.params;
+    try{
+        const proyect = await ProyectService.updateProyect(req.body,Number(id));
+        res.status(200).json(proyect);
+    }catch(err){
+        res.status(500).json({
+            message:err.message
+        });
+    }
+}
 module.exports = {
     getProyects,
     createProyect,
     getProyectById,
+    updateProyect,
 };

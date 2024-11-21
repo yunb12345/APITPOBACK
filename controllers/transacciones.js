@@ -1,8 +1,11 @@
 const TransaccionService = require('../services/transacciones');
+const CloudinaryService = require('../services/cloudinary');
 
 const createTransaccion = async (req, res) => {
+    const fileBuffer = req.file.buffer;
     try {
-        const transaccion = await TransaccionService.createTransaccion(req.body);
+        const urlImg = await CloudinaryService.uploadImage(fileBuffer);
+        const transaccion = await TransaccionService.createTransaccion({...req.body,imageUrl:urlImg});
         res.status(200).json(transaccion);
     } catch (err) {
         res.status(500).json({
