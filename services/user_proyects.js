@@ -18,9 +18,16 @@ const getProyectsByUser = async(userId) => await UsersProyects.findAll(
         attributes: ['ProyectId'],
       }
 );
+const removeUserFromProyect = async(userId, ProyectId) => await UsersProyects.destroy({ 
+  where: { 
+    ProyectId: ProyectId,
+    UserId: userId
+  } 
+}); 
 
 module.exports = { //esta disponible para otros archivos de js
     assignUser,
     getUsersByProyect,
-    getProyectsByUser
+    getProyectsByUser,
+    removeUserFromProyect
 };

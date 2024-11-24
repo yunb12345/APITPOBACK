@@ -10,10 +10,18 @@ const updateUser = async (user,userid) => await User.update(
         }
     }
 );
+const login = async (mail,pass) => await User.findOne({
+        where:{
+            email:mail,
+            password: pass,
+        }
+    }
+);
 
 module.exports = { //esta disponible para otros archivos de js
     getUsers,
     getUserById,
     createUser,
     updateUser,
+    login
 };

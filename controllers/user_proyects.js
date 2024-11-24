@@ -29,6 +29,17 @@ const getUsersByProyect = async (req,res) => {
     }
   };
 
+  const removeUserFromProyect = async (req,res) => {
+    try {
+      const proyectos = await UserProyects.removeUserFromProyect(req.body.userid, req.body.proyectid);
+      res.status(200).json(proyectos);
+    } catch (err) {
+      res.status(500).json({
+        message: err.message
+      });
+    }
+  };
+
   const assignUser = async(req,res) => {
       try {
         const proyect = await UserProyects.assignUser(req.body);
@@ -43,5 +54,6 @@ const getUsersByProyect = async (req,res) => {
   module.exports = {
     getUsersByProyect,
     getProyectsByUser,
-    assignUser
+    assignUser,
+    removeUserFromProyect
 };

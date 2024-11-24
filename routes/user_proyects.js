@@ -7,6 +7,7 @@ const router = Router();
 
 router.get('/users/:id',UserProyectController.getUsersByProyect); 
 router.get('/proyects/:id', UserProyectController.getProyectsByUser);
+router.delete('/', UserProyectController.removeUserFromProyect);
 router.post('/',[
     check("balance").not().isEmpty(),
     validateRequest,

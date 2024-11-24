@@ -10,6 +10,12 @@ const upload = multer({ storage: storage });
 
 router.get('/',UserController.getUsers); //http://localhost:8080/api/users/       endpoint final trae todos los usuarios
 router.get('/:id', UserController.getUserById); //http://localhost:8080/api/users/:id
+router.post('/login',  [
+    check("email").not().isEmpty(),
+    check("password").not().isEmpty(),
+    validateRequest,
+],
+UserController.login);
 router.post('/',
     upload.single('file'),
     [

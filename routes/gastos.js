@@ -14,4 +14,5 @@ GastoController.createGasto);
 router.get('/transaccion/:id',GastoController.getGastoByTransaccionId);
 
 
+
 module.exports = router;

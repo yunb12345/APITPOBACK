@@ -25,12 +25,12 @@ const getGastoByTransaccionId = async(req,res) =>{
         id
     } = req.params;
     try {
-        const gasto = await GastosService.getGastoById(Number(id));
+        const gasto = await GastosService.getGastosByTransaccion(Number(id));
         if (!gasto) res.status(404).json({
             message: 'Not Found!'
         });
 
-        res.status(200).json(proyect);
+        res.status(200).json(gasto);
 
     } catch (err) {
         res.status(500).json({
