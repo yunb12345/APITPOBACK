@@ -1,5 +1,8 @@
 const UserSerice = require('../services/users');
 const CloudinaryService = require('../services/cloudinary');
+const AuthService = require('../services/auth');
+const jwt = require('jsonwebtoken');
+const bycrypt = require("bcrypt");
 
 const getUsers = async (req, res) => {
     try {
@@ -31,13 +34,21 @@ const getUserById = async (req, res) => {
 };
 const createUser = async (req, res) => {
     try {
+        const{
+            username,
+            email,
+            password,
+            balance
+        } = req.body;
         if(req.file){
             const fileBuffer = req.file.buffer;
             const urlImg = await CloudinaryService.uploadImage(fileBuffer);
-            const user = await UserSerice.createUser({...req.body,imageUrl:urlImg});
+            const hashedPassword = bycrypt.hashSync(password,10);
+            const user = await UserSerice.createUser({...req.body,password:hashedPassword,imageUrl:urlImg});
             res.status(200).json(user);
         } else {
-            const user = await UserSerice.createUser(req.body);
+            const hashedPassword = bycrypt.hashSync(password,10);
+            const user = await UserSerice.createUser({...req.body,password:hashedPassword});
             res.status(200).json(user);
         }
     } catch (err) {
@@ -61,10 +72,28 @@ const updateUser = async (req,res) =>{
     }
 }
 const login = async (req, res) => {
-    console.log("asdasd")
     try {
-        const users = await UserSerice.login(req.body.email,req.body.password);
-        res.status(200).json(users);
+        const{
+            email,
+            password
+        } = req.body;
+        let isUserRegistered = await AuthService.hasValidCredentials(email,password);
+        if(isUserRegistered){
+            const user = await UserSerice.getUserByEmail(email);
+
+            const token = jwt.sign(user.toJSON(),process.env.PRIVATE_KEY,{
+                expiresIn:"1d",
+            });
+            return res.status(200).json({
+                status:200,
+                token,
+                message:"Token creado"
+            });
+        } else{
+            return res.status(401).json({
+                message:"Unauthorized",
+            });
+        }
     } catch (err) {
         res.status(500).json({
             message: err.message
