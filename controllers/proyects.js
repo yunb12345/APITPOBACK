@@ -17,14 +17,17 @@ const getProyectById = async(req,res) =>{
     } = req.params;
     try {
         const proyect = await ProyectService.getProyectById(Number(id));
-        if (!proyect) res.status(404).json({
-            message: 'Not Found!'
-        });
+        if (!proyect){
+            return res.status(404).json({
+                message: 'Not Found!'
+            });
+        } 
 
-        res.status(200).json(proyect);
+        //res.status(200).json(proyect);
+        res.json(proyect);
 
     } catch (err) {
-        res.status(500).json({
+        return res.status(500).json({
             message: err.message
         });
     }
