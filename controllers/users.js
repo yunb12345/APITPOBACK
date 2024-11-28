@@ -46,14 +46,14 @@ const createUser = async (req, res) => {
             const urlImg = await CloudinaryService.uploadImage(fileBuffer);
             const hashedPassword = bycrypt.hashSync(password,process.env.SALT);
             const user = await UserSerice.createUser({...req.body,password:hashedPassword,imageUrl:urlImg});
-            res.status(200).json(user);
+            return res.status(200).json({user,status:200});
         } else {
             const hashedPassword = bycrypt.hashSync(password,10);
             const user = await UserSerice.createUser({...req.body,password:hashedPassword});
-            res.status(200).json(user);
+            return res.status(200).json({user,status:200});
         }
     } catch (err) {
-        res.status(500).json({
+        return res.status(500).json({
             message: err.message
         });
     }
