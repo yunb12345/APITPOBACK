@@ -33,6 +33,22 @@ const getUserById = async (req, res) => {
         });
     }
 };
+
+const getUserByUserName = async (req, res) => {
+    try {
+        const user = await UserSerice.getUserByUserName(req.body.username);
+        if (!user) res.status(404).json({
+            message: 'Not Found!'
+        });
+
+        res.status(200).json(user);
+
+    } catch (err) {
+        res.status(500).json({
+            message: err.message
+        });
+    }
+};
 const createUser = async (req, res) => {
     try {
         const{
@@ -106,5 +122,6 @@ module.exports = {
     getUserById,
     createUser,
     updateUser,
-    login
+    login,
+    getUserByUserName
 };
