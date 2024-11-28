@@ -1,3 +1,4 @@
+require('dotenv').config();
 const UserSerice = require('../services/users');
 const CloudinaryService = require('../services/cloudinary');
 const AuthService = require('../services/auth');
@@ -43,7 +44,7 @@ const createUser = async (req, res) => {
         if(req.file){
             const fileBuffer = req.file.buffer;
             const urlImg = await CloudinaryService.uploadImage(fileBuffer);
-            const hashedPassword = bycrypt.hashSync(password,10);
+            const hashedPassword = bycrypt.hashSync(password,process.env.SALT);
             const user = await UserSerice.createUser({...req.body,password:hashedPassword,imageUrl:urlImg});
             res.status(200).json(user);
         } else {

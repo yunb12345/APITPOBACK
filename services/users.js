@@ -17,9 +17,9 @@ const login = async (mail,pass) => await User.findOne({
         }
     }
 );
-const getUserByEmail = async(mail) => await User.findeOne({
+const getUserByEmail = async(mail) => await User.findOne({
     where:{
-        email:email
+        email:mail
     }
 });
 module.exports = { //esta disponible para otros archivos de js

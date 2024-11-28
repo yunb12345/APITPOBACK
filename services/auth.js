@@ -1,16 +1,17 @@
 require("dotenv").config();
 const bycrypt = require("bcrypt");
-const UsuarioModel = require("../db/models/users");
+const { User } = require("../db/db");
 
 class AuthService{
-    async hasValidCredentials(email,password){
+    async hasValidCredentials(mail,pass){
         try{
-            
-            const user = await UsuarioModel.findOne({
-                email
+            const user = await User.findOne({
+                where:{
+                    email:mail
+                }
             });
-            const isPasswordValid = await bycrypt.compareSync(password,user.password);
-            if(user && isPasswordValid){
+            const isMatch = await bycrypt.compare(pass, user.password);
+            if(isMatch){
                 return true;
             }
             return false
