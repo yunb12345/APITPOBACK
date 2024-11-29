@@ -18,7 +18,7 @@ app.use(express.urlencoded({
 
 const corsOptions = {
     credentials: true,
-    origin: 'http://localhost:3000',     
+    origin: 'http://localhost:3000'
 };
 
 app.use(cors(corsOptions));
@@ -36,7 +36,7 @@ app.use('/api/users',require('./routes/users')); //http://localhost:8080/api/use
 app.use('/api/proyects',require('./routes/proyects')); //http://localhost:8080/api/proyects
 app.use('/api/gastos',require('./routes/gastos')); //http://localhost:8080/api/gastos
 app.use('/api/transacciones',require('./routes/transacciones'));
-app.use('/api/user_proyects',require('./routes/user_proyects'));
+app.use('/api/user_proyects',require('./routes/user_proyects')); //http://localhost:8080/api/user_proyects
 
 sequelize.authenticate()
     .then(() => {
