@@ -22,11 +22,17 @@ const getUserByEmail = async(mail) => await User.findOne({
         email:mail
     }
 });
+const getUserByUserName = async(username) => await User.findOne({
+    where:{
+        username:username
+    }
+});
 module.exports = { //esta disponible para otros archivos de js
     getUsers,
     getUserById,
     createUser,
     updateUser,
     login,
-    getUserByEmail
+    getUserByEmail,
+    getUserByUserName,
 };
