@@ -26,6 +26,12 @@ router.post('/',
     ],
     UserController.createUser);
 
-router.put('/:id',UserController.updateUser);
+router.put('/:id',
+    [
+        check("username").not().isEmpty(),
+        check("email").not().isEmpty(),
+        validateRequest,
+    ]
+    ,UserController.updateUser);
 
 module.exports = router;
