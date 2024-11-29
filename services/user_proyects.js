@@ -7,7 +7,6 @@ const getUsersByProyect = async (proyectId) => await UsersProyects.findAll(
         where: {
           ProyectId: proyectId
         },
-        attributes: ['UserId'],
       }
 );
 const getProyectsByUser = async(userId) => await UsersProyects.findAll(
@@ -15,7 +14,6 @@ const getProyectsByUser = async(userId) => await UsersProyects.findAll(
         where: {
           UserId: userId
         },
-        attributes: ['ProyectId'],
       }
 );
 const removeUserFromProyect = async(userId, ProyectId) => await UsersProyects.destroy({ 
