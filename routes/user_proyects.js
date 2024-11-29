@@ -14,4 +14,6 @@ router.post('/',[
 ],
 UserProyectController.assignUser); 
 
+router.put('/',UserProyectController.updateBalance);
+
 module.exports = router;

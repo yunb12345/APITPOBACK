@@ -24,10 +24,18 @@ const removeUserFromProyect = async(userId, ProyectId) => await UsersProyects.de
     UserId: userId
   } 
 }); 
+const updateBalance = async (userProyect,userId,proyectId) => await UsersProyects.update(
+    userProyect,{where:{
+      Userid:userId,
+      ProyectId:proyectId
+    }
+    }
+);
 
 module.exports = { //esta disponible para otros archivos de js
     assignUser,
     getUsersByProyect,
     getProyectsByUser,
-    removeUserFromProyect
+    removeUserFromProyect,
+    updateBalance
 };

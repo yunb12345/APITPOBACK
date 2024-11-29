@@ -60,7 +60,7 @@ const createUser = async (req, res) => {
         if(req.file){
             const fileBuffer = req.file.buffer;
             const urlImg = await CloudinaryService.uploadImage(fileBuffer);
-            const hashedPassword = bycrypt.hashSync(password,process.env.SALT);
+            const hashedPassword = bycrypt.hashSync(password,10);
             const user = await UserService.createUser({...req.body,password:hashedPassword,imageUrl:urlImg});
             return res.status(200).json({user,status:200});
         } else {
@@ -79,8 +79,15 @@ const updateUser = async (req,res) =>{
         id
     } = req.params;
     try{
+        console.log(req.body.password);
+        if(req.body.password){
+            console.log(req.body.password);
+            req.body.password = bycrypt.hashSync(req.body.password, 10);
+            console.log(req.body.password);
+        }
         await UserService.updateUser(req.body,Number(id));
         const user = await UserService.getUserById(Number(id));
+
         const userProfile = {
             id: user.id,
             user: user.username,  // Asumido que el nombre de usuario es 'username'
