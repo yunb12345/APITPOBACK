@@ -27,6 +27,11 @@ const getUserByUserName = async(username) => await User.findOne({
         username:username
     }
 });
+const deleteUserById = async(userId) => await User.destroy({
+    where:{
+        id:userId
+    },
+});
 module.exports = { //esta disponible para otros archivos de js
     getUsers,
     getUserById,
@@ -35,4 +40,5 @@ module.exports = { //esta disponible para otros archivos de js
     login,
     getUserByEmail,
     getUserByUserName,
+    deleteUserById
 };

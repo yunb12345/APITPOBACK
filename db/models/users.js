@@ -8,8 +8,10 @@ module.exports = (sequelize) => {
             primaryKey: true,
         },
         username: DataTypes.STRING,
+        /*
         name:DataTypes.STRING,
         lastName:DataTypes.STRING,
+        */
         email: DataTypes.STRING,
         password : DataTypes.STRING,
         balance : DataTypes.INTEGER,

@@ -1,5 +1,5 @@
 require('dotenv').config();
-const UserSerice = require('../services/users');
+const UserService = require('../services/users');
 const CloudinaryService = require('../services/cloudinary');
 const AuthService = require('../services/auth');
 const jwt = require('jsonwebtoken');
@@ -7,7 +7,7 @@ const bycrypt = require("bcrypt");
 
 const getUsers = async (req, res) => {
     try {
-        const users = await UserSerice.getUsers();
+        const users = await UserService.getUsers();
         res.status(200).json({body:users});
     } catch (err) {
         res.status(500).json({
@@ -20,7 +20,7 @@ const getUserById = async (req, res) => {
         id
     } = req.params;
     try {
-        const user = await UserSerice.getUserById(Number(id));
+        const user = await UserService.getUserById(Number(id));
         if (!user) res.status(404).json({
             message: 'Not Found!'
         });
@@ -36,7 +36,7 @@ const getUserById = async (req, res) => {
 
 const getUserByUserName = async (req, res) => {
     try {
-        const user = await UserSerice.getUserByUserName(req.body.username);
+        const user = await UserService.getUserByUserName(req.body.username);
         if (!user) res.status(404).json({
             message: 'Not Found!'
         });
@@ -61,11 +61,11 @@ const createUser = async (req, res) => {
             const fileBuffer = req.file.buffer;
             const urlImg = await CloudinaryService.uploadImage(fileBuffer);
             const hashedPassword = bycrypt.hashSync(password,process.env.SALT);
-            const user = await UserSerice.createUser({...req.body,password:hashedPassword,imageUrl:urlImg});
+            const user = await UserService.createUser({...req.body,password:hashedPassword,imageUrl:urlImg});
             return res.status(200).json({user,status:200});
         } else {
             const hashedPassword = bycrypt.hashSync(password,10);
-            const user = await UserSerice.createUser({...req.body,password:hashedPassword});
+            const user = await UserService.createUser({...req.body,password:hashedPassword});
             return res.status(200).json({user,status:200});
         }
     } catch (err) {
@@ -79,11 +79,22 @@ const updateUser = async (req,res) =>{
         id
     } = req.params;
     try{
-        const user = await UserSerice.updateUser(req.body,Number(id));
-        res.status(200).json(user);
+        await UserService.updateUser(req.body,Number(id));
+        const user = await UserService.getUserById(Number(id));
+        const userProfile = {
+            id: user.id,
+            user: user.username,  // Asumido que el nombre de usuario es 'username'
+            mail: user.email,
+            /*
+            name: user.name, // Si tienes un campo 'name'
+            lastName: user.lastName, // Si tienes un campo 'lastName'
+            */
+            balance: user.balance // Si tienes un campo de balance
+        };
+        return res.status(200).json(userProfile);
     }
     catch(err){
-        res.status(500).json({
+        return res.status(500).json({
             message: err.message
         });
     }
@@ -96,7 +107,7 @@ const login = async (req, res) => {
         } = req.body;
         let isUserRegistered = await AuthService.hasValidCredentials(email,password);
         if(isUserRegistered){
-            const user = await UserSerice.getUserByEmail(email);
+            const user = await UserService.getUserByEmail(email);
 
             const token = jwt.sign(user.toJSON(),process.env.PRIVATE_KEY,{
                 expiresIn:"1d",
@@ -117,11 +128,25 @@ const login = async (req, res) => {
         });
     }
 };
+const deleteUserById = async(req,res) => {
+    try{
+        const{
+            id
+        } = req.params;
+        const user = await UserService.deleteUserById(id);
+        return res.status(200).json({message:'Usuario eliminado'});
+    }catch{
+        return res.status(500).json({
+            message: err.message
+        });
+    }
+}
 module.exports = {
     getUsers,
     getUserById,
     createUser,
     updateUser,
     login,
-    getUserByUserName
+    getUserByUserName,
+    deleteUserById
 };
