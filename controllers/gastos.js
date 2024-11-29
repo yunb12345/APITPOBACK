@@ -38,9 +38,22 @@ const getGastoByTransaccionId = async(req,res) =>{
         });
     }
 }
-
+const getGastosByUserId = async(req,res) => {
+    const {
+        id
+    } = req.params;
+    try {
+        const gasto = await GastosService.getGastosByUserId(Number(id));
+        return res.status(200).json(gasto);
+    }catch(err){
+        res.status(500).json({
+            message:err.message
+        });
+    }
+}
 module.exports = {
     getGastos,
     createGasto,
     getGastoByTransaccionId,
+    getGastosByUserId,
 };

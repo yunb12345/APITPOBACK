@@ -6,11 +6,21 @@ const getTransaccionByProyectId = async (proyectId) => await Transaccion.findAll
         where: {
           proyectId: proyectId
         },
-        attributes: ['Id','montoTotal','nombreTransaccion'],
       }
 );
 
+//este no esta hecho
+const getTransaccionByUserId = async (proyectId) => await Transaccion.findAll(
+  {
+      where: {
+        userId: proyectId
+      },
+    }
+);
+const getTransaccionById = async(id) => await Transaccion.findByPk(id);
 module.exports = { //esta disponible para otros archivos de js
     createTransaccion,
-    getTransaccionByProyectId
+    getTransaccionByProyectId,
+    getTransaccionByUserId,
+    getTransaccionById,
 };

@@ -11,10 +11,17 @@ const getGastosByTransaccion = async(id) => await Gasto.findAll(
         attributes: ['porcentaje','UserId'],
       }
 );
-
+const getGastosByUserId = async(id) => await Gasto.findAll(
+  {
+      where: {
+        UserId: id
+      },
+    }
+);
 module.exports = { //esta disponible para otros archivos de js
     getGastos,
     getGastoById,
     createGasto,
-    getGastosByTransaccion
+    getGastosByTransaccion,
+    getGastosByUserId,
 };

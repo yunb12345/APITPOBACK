@@ -12,7 +12,6 @@ router.post('/',[
 ],
 GastoController.createGasto);
 router.get('/transaccion/:id',GastoController.getGastoByTransaccionId);
-
-
+router.get('/user/:id',GastoController.getGastosByUserId);
 
 module.exports = router;
