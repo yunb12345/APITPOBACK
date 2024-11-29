@@ -16,5 +16,6 @@ router.post('/',
     ],
     ProyectController.createProyect);
 router.put('/:id',ProyectController.updateProyect);
+router.delete('/:id',ProyectController.deleteProyectById);
 
 module.exports = router;

@@ -10,10 +10,15 @@ const updateProyect = async(proyect,proyectid) => await Proyect.update(
         }
     }
 );
-
+const deleteProyectById = async(proyectId) => await Proyect.destroy({
+    where:{
+        id:proyectId
+    },
+});
 module.exports = { //esta disponible para otros archivos de js
     getProyects,
     getProyectById,
     createProyect,
     updateProyect,
+    deleteProyectById,
 };

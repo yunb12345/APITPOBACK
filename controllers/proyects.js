@@ -55,9 +55,23 @@ const updateProyect = async(req,res) =>{
         });
     }
 }
+const deleteProyectById = async(req,res)=>{
+    const{
+        id
+    } = req.params;
+    try{
+        const proyect = await ProyectService.deleteProyectById(id);
+        return res.status(200).json({message:'Proyecto eliminado'});
+    }catch(err){
+        return res.status(500).json({
+            message: err.message
+        });
+    }
+}
 module.exports = {
     getProyects,
     createProyect,
     getProyectById,
     updateProyect,
+    deleteProyectById,
 };
