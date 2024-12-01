@@ -3,7 +3,6 @@ const TransaccionController = require('../controllers/transacciones');
 const {body,check} = require('express-validator');
 const validateRequest = require('../middlewares/request_validator');
 const multer = require('multer');
-const { getTransaccionById } = require('../services/transacciones');
 
 
 const router = Router();
@@ -17,7 +16,7 @@ router.post('/',
         validateRequest,
     ],
     TransaccionController.createTransaccion);
-router.get('/proyects/:id', TransaccionController.getTransaccionByProyectId);
+router.get('/proyects/:id', TransaccionController.getTransaccionByProyectId); //http://localhost:8080/api/transacciones/proyects
 router.get('/:id',TransaccionController.getTransaccionById);
 
 module.exports = router;

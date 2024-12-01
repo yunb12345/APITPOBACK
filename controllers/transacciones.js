@@ -38,7 +38,7 @@ const getTransaccionByProyectId = async (req, res) => {
       } = req.params;
         try { 
           const transactions = await TransaccionService.getTransaccionByProyectId(Number(id));
-          return res.status(200).json({transactions});
+          return res.status(200).json(transactions);
         } catch (err) {
           return res.status(500).json({
             message: err.message

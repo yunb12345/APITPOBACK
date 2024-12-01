@@ -30,10 +30,10 @@ const getGastoByTransaccionId = async(req,res) =>{
             message: 'Not Found!'
         });
 
-        res.status(200).json(gasto);
+        return res.status(200).json(gasto);
 
     } catch (err) {
-        res.status(500).json({
+        return res.status(500).json({
             message: err.message
         });
     }
