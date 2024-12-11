@@ -1,7 +1,8 @@
 const express = require("express");
 const dotenv = require('dotenv');
 const cors = require('cors');
-
+const swagger = require('swagger-ui-express');
+const specs = require('./swagger');
 
 const {
     sequelize
@@ -35,9 +36,10 @@ app.listen(PORT,() => {
 app.use('/api/users',require('./routes/users')); //http://localhost:8080/api/users
 app.use('/api/proyects',require('./routes/proyects')); //http://localhost:8080/api/proyects
 app.use('/api/gastos',require('./routes/gastos')); //http://localhost:8080/api/gastos
-app.use('/api/transacciones',require('./routes/transacciones'));
+app.use('/api/transacciones',require('./routes/transacciones')); //http://localhost:8080/api/transacciones
 app.use('/api/user_proyects',require('./routes/user_proyects')); //http://localhost:8080/api/user_proyects
 
+app.use('/api-docs',swagger.serve,swagger.setup(specs));
 sequelize.authenticate()
     .then(() => {
         console.log('Database connection established!');
