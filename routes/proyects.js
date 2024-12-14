@@ -2,6 +2,7 @@ const {Router} = require('express');
 const ProyectController = require('../controllers/proyects');
 const {body,check} = require('express-validator');
 const validateRequest = require('../middlewares/request_validator');
+const validateJwt = require("../middlewares/jwtvalidator");
 
 const router = Router();
 /**
@@ -80,32 +81,25 @@ router.get('/:id', ProyectController.getProyectById);
  *   post:
  *     summary: Crear un proyecto
  *     tags: [Proyects]
+ *     security:
+ *       - jwt: [] # Este endpoint requiere JWT
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               proyectName:
- *                 type: string
- *                 description: Nombre de usuario
- *               proyectDesc:
- *                 type: string
- *                 format: email
- *                 description: El mail de usuario
- *           example:
- *             proyectName: "Asado Sabado"
- *             proyectDesc: "Grupo para el asado"
+ *             $ref: '#/components/schemas/Proyects'
  *     responses:
- *       200:
- *         description: El proyecto fue creado correctamente
+ *       201:
+ *         description: Proyecto creado con éxito
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Proyects'
+ *       400:
+ *         description: Datos inválidos
  *       500:
- *         description: Some server error
+ *         description: Error interno del servidor
  */
 router.post('/',
     [
@@ -113,72 +107,67 @@ router.post('/',
         check("proyectDesc").not().isEmpty(),
         validateRequest,
     ],
-    ProyectController.createProyect);
-router.put('/:id',ProyectController.updateProyect);
+    validateJwt,ProyectController.createProyect);
 /**
  * @swagger
  * /api/proyects/{id}:
  *   put:
  *     summary: Actualizar un proyecto
  *     tags: [Proyects]
+ *     security:
+ *       - jwt: [] # Este endpoint requiere JWT
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: integer
  *         required: true
- *         description: El ID del proyecto
+ *         description: ID del proyecto
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               proyectName:
- *                 type: string
- *                 description: Nombre de usuario
- *               proyectDesc:
- *                 type: string
- *                 format: email
- *                 description: El mail de usuario
- *           example:
- *             proyectName: "Asado Sabado"
- *             proyectDesc: "Grupo para el asado"
+ *             $ref: '#/components/schemas/Proyects'
  *     responses:
  *       200:
- *         description: El proyecto fue actualizado correctamente
+ *         description: Proyecto actualizado con éxito
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Proyects'
+ *       404:
+ *         description: No se encontró el proyecto
  *       500:
- *         description: Some server error
+ *         description: Error interno del servidor
  */
-router.delete('/:id',ProyectController.deleteProyectById);
+router.put('/:id',validateJwt,ProyectController.updateProyect);
+
 /**
  * @swagger
  * /api/proyects/{id}:
  *   delete:
- *     summary: Eliminar proyecto por ID
+ *     summary: Eliminar un proyecto por su ID
  *     tags: [Proyects]
+ *     security:
+ *       - jwt: [] # Este endpoint requiere JWT
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: integer
  *         required: true
- *         description: El ID del usuario
+ *         description: ID del proyecto
  *     responses:
  *       200:
- *         description: El usuario fue eliminado
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Proyects'
+ *         description: Proyecto eliminado con éxito
  *       404:
- *         description: El proyecto no se encuentra
+ *         description: No se encontró el proyecto
+ *       500:
+ *         description: Error interno del servidor
  */
+router.delete('/:id',validateJwt,ProyectController.deleteProyectById);
+
 
 
 module.exports = router;

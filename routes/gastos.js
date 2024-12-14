@@ -57,6 +57,8 @@ router.get('/',GastoController.getGastos); //http://localhost:8080/api/gastos/  
  *   post:
  *     summary: Crea un nuevo gasto
  *     tags: [Gasto]
+ *     security:
+ *       - jwt: [] # Este endpoint requiere JWT
  *     requestBody:
  *       required: true
  *       content:
@@ -71,31 +73,11 @@ router.get('/',GastoController.getGastos); //http://localhost:8080/api/gastos/  
  *             schema:
  *               $ref: '#/components/schemas/Gasto'
  *       400:
- *         description: Error en los datos enviados
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                   example: false
- *                 message:
- *                   type: string
- *                   example: "El campo 'porcentaje' es obligatorio"
+ *         description: Datos inválidos
+ *       401:
+ *         description: No autorizado
  *       500:
  *         description: Error interno del servidor
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                   example: false
- *                 message:
- *                   type: string
- *                   example: "Error al crear el gasto"
  */
 router.post('/',[
     check("porcentaje").not().isEmpty(),

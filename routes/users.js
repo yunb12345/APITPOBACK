@@ -12,6 +12,12 @@ const upload = multer({ storage: storage });
 /**
  * @swagger
  * components:
+ *   securitySchemes:
+ *     jwt:
+ *       type: apiKey
+ *       in: header
+ *       name: jwt
+ *       description: Token JWT para autenticar al usuario
  *   schemas:
  *     User:
  *       type: object
@@ -176,54 +182,25 @@ router.post('/',
  *           type: integer
  *         required: true
  *         description: El ID del usuario
+ *     security:
+ *       - jwt: [] 
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               username:
- *                 type: string
- *                 description: Nombre de usuario
- *               email:
- *                 type: string
- *                 format: email
- *                 description: El mail de usuario
- *               password:
- *                 type: string
- *                 format: password
- *                 description: La password del usuario
- *               balance:
- *                 type: number
- *                 format: float
- *                 description: El balance del usuario
- *               imageUrl:
- *                 type: string
- *                 format: uri
- *                 description: la url del img
- *             required:
- *               - username
- *               - email
- *               - password
- *               - balance
- *           example:
- *             username: "test321"
- *             email: "321@321.com"
- *             password: "321"
- *             balance: 550
- *             imageUrl: null
+ *              $ref: '#/components/schemas/User'
  *     responses:
  *       200:
- *         description: El usuario se actualizo correctamente
+ *         description: El usuario se actualizó correctamente
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/User'
  *       404:
- *         description: El usaurio no existe
+ *         description: El usuario no existe
  *       500:
- *         description: Ocurrio un error
+ *         description: Ocurrió un error
  */
 router.put('/:id',
     [

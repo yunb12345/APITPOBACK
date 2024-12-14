@@ -48,6 +48,8 @@ const upload = multer({ storage: storage });
  *   post:
  *     summary: Crea una nueva transacción
  *     tags: [Transaccion]
+ *     security:
+ *       - jwt: [] # Este endpoint requiere JWT
  *     requestBody:
  *       required: true
  *       content:
@@ -72,6 +74,7 @@ const upload = multer({ storage: storage });
  *             required:
  *               - proyectId
  *               - nombreTransaccion
+ *               - montoTotal
  *     responses:
  *       201:
  *         description: Transacción creada con éxito
@@ -80,31 +83,9 @@ const upload = multer({ storage: storage });
  *             schema:
  *               $ref: '#/components/schemas/Transaccion'
  *       400:
- *         description: Error en los datos enviados
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                   example: false
- *                 message:
- *                   type: string
- *                   example: "El campo 'nombreTransaccion' es obligatorio"
+ *         description: Datos inválidos
  *       500:
  *         description: Error interno del servidor
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                   example: false
- *                 message:
- *                   type: string
- *                   example: "Error al crear la transacción"
  */
 router.post('/',
     upload.single('file'),

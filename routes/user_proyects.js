@@ -86,8 +86,10 @@ router.get('/proyects/:id', UserProyectController.getProyectsByUser); //http://l
  * @swagger
  * /api/user_proyects:
  *   delete:
- *     summary: Eliminar usuarioproyecto con el UsuarioID y ProyecttoID
+ *     summary: Elimina la relación Usuario-Proyecto
  *     tags: [UsersProyects]
+ *     security:
+ *       - jwt: [] # Indica que este endpoint requiere JWT
  *     requestBody:
  *       required: true
  *       content:
@@ -103,63 +105,68 @@ router.get('/proyects/:id', UserProyectController.getProyectsByUser); //http://l
  *                 description: ID del proyecto
  *     responses:
  *       200:
- *         description: El usuario fue eliminado
+ *         description: La relación fue eliminada con éxito
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/UsersProyects'
  *       404:
- *         description: El usuario no se encuentra
+ *         description: La relación no se encontró
  */
-router.delete('/', UserProyectController.removeUserFromProyect);
+router.delete('/',validateJwt, UserProyectController.removeUserFromProyect);
 /**
  * @swagger
  * /api/user_proyects:
  *   post:
- *     summary: Agregar un usuario a un proyecto
+ *     summary: Asigna un usuario a un proyecto
  *     tags: [UsersProyects]
+ *     security:
+ *       - jwt: [] # Indica que este endpoint requiere JWT
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *              $ref: '#/components/schemas/UsersProyects'
+ *             $ref: '#/components/schemas/UsersProyects'
  *     responses:
  *       200:
- *         description: El usuario fue asignado a un proyecto
+ *         description: El usuario fue asignado al proyecto
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/UsersProyects'
  *       500:
- *         description: Ocurrio un error
+ *         description: Ocurrió un error
  */
 router.post('/',[
     check("balance").not().isEmpty(),
     validateRequest,
 ],
-UserProyectController.assignUser); 
+validateJwt,UserProyectController.assignUser);
+
 /**
  * @swagger
  * /api/user_proyects:
  *   put:
- *     summary: Actualizar balance
+ *     summary: Actualiza el balance de un usuario en un proyecto
  *     tags: [UsersProyects]
+ *     security:
+ *       - jwt: [] # Indica que este endpoint requiere JWT
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *              $ref: '#/components/schemas/UsersProyects'
+ *             $ref: '#/components/schemas/UsersProyects'
  *     responses:
  *       200:
- *         description: La informacion se actualizo correctamente
+ *         description: El balance fue actualizado con éxito
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/UsersProyects'
  *       500:
- *         description: Ocurrio un error
+ *         description: Ocurrió un error
  */
 router.put('/',validateJwt,UserProyectController.updateBalance); //hay que cambiar el swagger para validar
 
