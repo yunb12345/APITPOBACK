@@ -2,6 +2,7 @@ const {Router} = require('express');
 const GastoController = require('../controllers/gastos');
 const {body,check} = require('express-validator');
 const validateRequest = require('../middlewares/request_validator');
+const validateJwt = require("../middlewares/jwtvalidator");
 
 const router = Router();
 /**
@@ -100,7 +101,7 @@ router.post('/',[
     check("porcentaje").not().isEmpty(),
     validateRequest,
 ],
-GastoController.createGasto);
+validateJwt,GastoController.createGasto); //hay que cambiar el swagger para validarJwt
 /**
  * @swagger
  * /api/gastos/transaccion/{id}:

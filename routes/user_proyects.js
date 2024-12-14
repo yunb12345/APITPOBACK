@@ -2,6 +2,7 @@ const {Router} = require('express');
 const UserProyectController = require('../controllers/user_proyects');
 const {body,check} = require('express-validator');
 const validateRequest = require('../middlewares/request_validator');
+const validateJwt = require("../middlewares/jwtvalidator");
 
 const router = Router();
 /**
@@ -160,6 +161,6 @@ UserProyectController.assignUser);
  *       500:
  *         description: Ocurrio un error
  */
-router.put('/',UserProyectController.updateBalance);
+router.put('/',validateJwt,UserProyectController.updateBalance); //hay que cambiar el swagger para validar
 
 module.exports = router;

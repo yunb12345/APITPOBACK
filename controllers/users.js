@@ -79,11 +79,11 @@ const updateUser = async (req,res) =>{
         id
     } = req.params;
     try{
-        console.log(req.body.password);
+
         if(req.body.password){
-            console.log(req.body.password);
+
             req.body.password = bycrypt.hashSync(req.body.password, 10);
-            console.log(req.body.password);
+
         }
         await UserService.updateUser(req.body,Number(id));
         const user = await UserService.getUserById(Number(id));

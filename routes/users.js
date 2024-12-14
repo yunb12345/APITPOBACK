@@ -3,6 +3,7 @@ const UserController = require('../controllers/users');
 const {body,check} = require('express-validator');
 const validateRequest = require('../middlewares/request_validator');
 const multer = require('multer');
+const validateJwt = require("../middlewares/jwtvalidator");
 
 const router = Router();
 const storage = multer.memoryStorage();
@@ -230,7 +231,7 @@ router.put('/:id',
         check("email").not().isEmpty(),
         validateRequest,
     ]
-    ,UserController.updateUser);
+    ,validateJwt,UserController.updateUser);
 
 router.delete('/:id',UserController.deleteUserById);
 /**

@@ -3,7 +3,7 @@ const TransaccionController = require('../controllers/transacciones');
 const {body,check} = require('express-validator');
 const validateRequest = require('../middlewares/request_validator');
 const multer = require('multer');
-
+const validateJwt = require("../middlewares/jwtvalidator");
 
 const router = Router();
 const storage = multer.memoryStorage();
@@ -112,7 +112,7 @@ router.post('/',
         check("nombreTransaccion").not().isEmpty(),
         validateRequest,
     ],
-    TransaccionController.createTransaccion);
+    validateJwt,TransaccionController.createTransaccion); //hay que cambiar el swagger para validar jwt
 /**
  * @swagger
  * /api/transaccion/proyects/{id}:
@@ -170,6 +170,12 @@ router.get('/proyects/:id', TransaccionController.getTransaccionByProyectId); //
  *     summary: Obtiene una transacción por su ID
  *     tags: [Transaccion]
  *     parameters:
+ *       - in: header
+ *         name: jwt
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token JWT para autenticar al usuario
  *       - in: path
  *         name: id
  *         schema:
