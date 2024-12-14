@@ -4,6 +4,10 @@ const CloudinaryService = require('../services/cloudinary');
 const AuthService = require('../services/auth');
 const jwt = require('jsonwebtoken');
 const bycrypt = require("bcrypt");
+const MailService = require('../services/mail');
+const fs = require('fs');
+const handlebars = require('handlebars');
+
 
 const getUsers = async (req, res) => {
     try {
@@ -81,9 +85,22 @@ const updateUser = async (req,res) =>{
     try{
 
         if(req.body.password){
-
             req.body.password = bycrypt.hashSync(req.body.password, 10);
-
+        }
+        if(req.body.balance){
+            if(req.body.balance>5000){
+                const templatePath = path.resolve(__dirname, '../templates/email.template.hbs');
+                const templateSource = fs.readFileSync(templatePath, 'utf8');
+                const template = handlebars.compile(templateSource);
+                const htmlContent = template({
+                    balance: req.body.balance,
+                    userName: req.body.username
+                });
+                await MailService.sendMail(
+                    req.body.email,
+                    `Tu saldo supero los 5000`,
+                    htmlContent)
+            }
         }
         await UserService.updateUser(req.body,Number(id));
         const user = await UserService.getUserById(Number(id));

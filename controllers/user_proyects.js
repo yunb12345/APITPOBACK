@@ -1,7 +1,6 @@
 const { UsersProyects } = require('../db/db');
 const UserProyects = require('../services/user_proyects');
 
-
 const getUsersByProyect = async (req,res) => {
   const {
     id
@@ -53,10 +52,7 @@ const getUsersByProyect = async (req,res) => {
   }
 
   const updateBalance = async(req,res) =>{
-
     try{
-      console.log('Request Body:', req.body);
-      console.log('Request Body:', req.body.ProyectId);
       const user_proyects = await UserProyects.updateBalance(req.body,req.body.UserId,req.body.ProyectId);
       return res.status(200).json(user_proyects);
     }
