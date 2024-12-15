@@ -7,6 +7,7 @@ const bycrypt = require("bcrypt");
 const MailService = require('../services/mail');
 const fs = require('fs');
 const handlebars = require('handlebars');
+const path = require('path');
 
 
 const getUsers = async (req, res) => {
@@ -87,32 +88,30 @@ const updateUser = async (req,res) =>{
         if(req.body.password){
             req.body.password = bycrypt.hashSync(req.body.password, 10);
         }
-        if(req.body.balance){
-            if(req.body.balance>5000){
-                const templatePath = path.resolve(__dirname, '../templates/email.template.hbs');
-                const templateSource = fs.readFileSync(templatePath, 'utf8');
-                const template = handlebars.compile(templateSource);
-                const htmlContent = template({
-                    balance: req.body.balance,
-                    userName: req.body.username
-                });
-                await MailService.sendMail(
-                    req.body.email,
-                    `Tu saldo supero los 5000`,
-                    htmlContent)
-            }
-        }
+        console.log(req.body.balance);
         await UserService.updateUser(req.body,Number(id));
+        
+        if (req.body.balance && req.body.balance > 5000) {
+            const templatePath = path.resolve(__dirname, '../template/email.template.hbs');
+            const templateSource = fs.readFileSync(templatePath, 'utf8');
+            const template = handlebars.compile(templateSource);
+            const htmlContent = template({
+                balance: req.body.balance,
+                userName: req.body.username
+            });
+            await MailService.sendMail(
+                req.body.email,
+                `Tu saldo supera los 5000`,
+                htmlContent
+            );
+        }
+        
         const user = await UserService.getUserById(Number(id));
 
         const userProfile = {
             id: user.id,
-            user: user.username,  // Asumido que el nombre de usuario es 'username'
+            user: user.username,
             mail: user.email,
-            /*
-            name: user.name, // Si tienes un campo 'name'
-            lastName: user.lastName, // Si tienes un campo 'lastName'
-            */
             balance: user.balance // Si tienes un campo de balance
         };
         return res.status(200).json(userProfile);
